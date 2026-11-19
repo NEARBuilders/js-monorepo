@@ -11,6 +11,11 @@ on:
 permissions:
   contents: read
 
+# Cancel superseded PR checks; keep every non-PR invocation independent.
+concurrency:
+  group: ci.yml-${{ github.event.pull_request.number || github.run_id }}
+  cancel-in-progress: ${{ github.event_name == 'pull_request' }}
+
 jobs:
   test:
     runs-on: ubuntu-latest
